@@ -27,16 +27,12 @@ predictions = model(image, training=False)
 detections = PredictionDecoder(num_classes=4, confidence_threshold=0.38)(image, predictions)
 inference_model = tf.keras.Model(inputs=image, outputs=detections)
 
-for sample in val_dataset.take(3):
+for sample in val_dataset.take(4):
     original_image = sample[0]
     input_image, ratio = prepare_image(original_image)
     detections = inference_model.predict(input_image)
     num_detections = detections.valid_detections[0]
-    class_names = ['A'] * num_detections
+    class_names = ['100 yen'] * num_detections
     score = [1] * num_detections
     visualize_detections(original_image, detections.nmsed_boxes[0][:num_detections] / ratio,
                          class_names, detections.nmsed_scores[0][:num_detections])
-
-
-
-

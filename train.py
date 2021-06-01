@@ -16,6 +16,7 @@ model_dir = 'models_2'
 label_encoder = LabelEncoder()
 
 num_classes = 3
+num_epochs = 30
 
 learning_rates = [2.5e-06, 0.000625, 0.0005, 0.001, 0.00025, 2.5e-05]
 learning_rate_boundaries = [55, 125, 200, 300, 400]
@@ -71,12 +72,12 @@ callbacks_list = [
         monitor="val_loss",
         save_best_only=True,
         save_weights_only=True,
-        verbose=1,
-    )
+        verbose=1),
+    tf.keras.callbacks.TensorBoard(log_dir=f"logs_{num_epochs}_epochs")
 ]
 
 model.fit(train_dataset,
           validation_data=val_dataset,
-          epochs=50,
+          epochs=num_epochs,
           callbacks=callbacks_list,
           verbose=1)

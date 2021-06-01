@@ -1,4 +1,4 @@
-# japan_coin
+# Counting Coin by Object Detection
 
 Using computer vision to counting japanese coins
 

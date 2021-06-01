@@ -1,4 +1,4 @@
-miport os
+import os
 from utils.retina import RetinaNet, FocalLoss, get_backbone
 from utils.generator import (LabelEncoder, preprocess_data, 
                              preprocess_data_from_textline, 
@@ -10,34 +10,33 @@ from tensorflow.data import TextLineDataset, TFRecordDataset
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 # from tensorflow.optimizers.schedules import PiecewiseConstantDecay
-import zipfile
 
-import pdb
 
-model_dir = "models"
+# model_dir = "models"
+model_dir = 'models_2'
 label_encoder = LabelEncoder()
 
-num_classes = 4
+num_classes = 3
 
 learning_rates = [2.5e-06, 0.000625, 0.001, 0.00125, 0.00025, 2.5e-05]
-learning_rate_boundaries = [125, 250, 500, 240000, 360000]
+learning_rate_boundaries = [55, 125, 200, 300, 400]
 learning_rate_fn = tf.optimizers.schedules.PiecewiseConstantDecay(boundaries=learning_rate_boundaries, 
                                           values=learning_rates)
 
 
-# resnet50_backbone = get_backbone()
+resnet50_backbone = get_backbone()
 loss_fn = FocalLoss(num_classes)
-# model = RetinaNet(num_classes=num_classes)
+model = RetinaNet(num_classes=num_classes)
 
-model = RetinaNet(4)
-latest_checkpoint = tf.train.latest_checkpoint('models/')
-model.load_weights(latest_checkpoint)
+# model = RetinaNet(4)
+# latest_checkpoint = tf.train.latest_checkpoint('models/')
+# model.load_weights(latest_checkpoint)
 
 optimizer = tf.optimizers.SGD(learning_rate=learning_rate_fn, momentum=0.9)
-# optimizer = Adam(learning_rate=0.001)
+# optimizer = Adam(learning_rate=0.0005)
 model.compile(loss=loss_fn, optimizer=optimizer)
 
-batch_size = 3
+batch_size = 2
 
 # (train_dataset, val_dataset), dataset_info = tfds.load(
 #     "coco/2017", split=["train", "validation"], with_info=True, data_dir="data"
@@ -63,24 +62,15 @@ train_dataset = train_dataset.map(label_encoder.encode_batch,
 train_dataset = train_dataset.apply(tf.data.experimental.ignore_errors())
 train_dataset = train_dataset.prefetch(autotune)
 
-# val_dataset = val_dataset.map(preprocess_data, num_parallel_calls=autotune)
 val_dataset = val_dataset.map(lambda x: preprocess_data_from_textline(x, val_path),
                               num_parallel_calls=autotune)
 
-# val_dataset = TFRecordDataset(filenames='data/val.record', num_parallel_reads=autotune)
-# val_dataset.map(lambda x: preprocess_data_from_tfrecord(x, feature_description), num_parallel_calls=autotune)
 val_dataset = val_dataset.padded_batch(batch_size=batch_size, 
                                        padding_values=(0.0, 1e-8, -1), 
                                        drop_remainder=True)
 val_dataset = val_dataset.map(label_encoder.encode_batch, num_parallel_calls=autotune)
 val_dataset = val_dataset.apply(tf.data.experimental.ignore_errors())
 val_dataset = val_dataset.prefetch(autotune)
-
-# saving_cb = ModelCheckpoint(filepath=os.path.join(model_dir,'retinanet.h5'),
-#                             monitor="val_loss",
-#                             save_best_only=True,
-#                             save_weights_only=True,
-#                             verbose=1)
 
 callbacks_list = [
     tf.keras.callbacks.ModelCheckpoint(
@@ -94,6 +84,6 @@ callbacks_list = [
 
 model.fit(train_dataset,
           validation_data=val_dataset,
-          epochs=30,
+          epochs=50,
           callbacks=callbacks_list,
           verbose=1)

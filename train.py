@@ -43,10 +43,10 @@ batch_size = 3
 #     "coco/2017", split=["train", "validation"], with_info=True, data_dir="data"
 # )
 
-train_dataset  = TextLineDataset(filenames='data/annot_train.txt')
-val_dataset  = TextLineDataset(filenames='data/annot_val.txt')
-train_path = "C:/Users/HP/work/data/image/synthetic/train"
-val_path = "C:/Users/HP/work/data/image/synthetic/val"
+train_dataset  = TextLineDataset(filenames='data/train_annotation.txt')
+val_dataset  = TextLineDataset(filenames='data/test_annotation.txt')
+train_path = "data/images"
+val_path = "data/images"
 
 autotune = tf.data.experimental.AUTOTUNE
 train_dataset = train_dataset.map(lambda x: preprocess_data_from_textline(x, train_path),

@@ -19,7 +19,7 @@ def prepare_image(image):
 
 
 model = RetinaNet(3)
-latest_checkpoint = tf.train.latest_checkpoint('models')
+latest_checkpoint = tf.train.latest_checkpoint('models_2')
 model.load_weights(latest_checkpoint)
 
 image = tf.keras.Input(shape=[None, None, 3], name="image")
@@ -27,7 +27,7 @@ predictions = model(image, training=False)
 detections = PredictionDecoder(num_classes=4, confidence_threshold=0.38)(image, predictions)
 inference_model = tf.keras.Model(inputs=image, outputs=detections)
 
-for sample in val_dataset.take(4):
+for sample in val_dataset.take(5):
     original_image = sample[0]
     input_image, ratio = prepare_image(original_image)
     detections = inference_model.predict(input_image)

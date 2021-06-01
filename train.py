@@ -9,7 +9,6 @@ import tensorflow_datasets as tfds
 from tensorflow.data import TextLineDataset, TFRecordDataset
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
-# from tensorflow.optimizers.schedules import PiecewiseConstantDecay
 
 
 # model_dir = "models"
@@ -18,7 +17,7 @@ label_encoder = LabelEncoder()
 
 num_classes = 3
 
-learning_rates = [2.5e-06, 0.000625, 0.001, 0.00125, 0.00025, 2.5e-05]
+learning_rates = [2.5e-06, 0.000625, 0.0005, 0.001, 0.00025, 2.5e-05]
 learning_rate_boundaries = [55, 125, 200, 300, 400]
 learning_rate_fn = tf.optimizers.schedules.PiecewiseConstantDecay(boundaries=learning_rate_boundaries, 
                                           values=learning_rates)
@@ -38,10 +37,6 @@ model.compile(loss=loss_fn, optimizer=optimizer)
 
 batch_size = 2
 
-# (train_dataset, val_dataset), dataset_info = tfds.load(
-#     "coco/2017", split=["train", "validation"], with_info=True, data_dir="data"
-# )
-
 train_dataset  = TextLineDataset(filenames='data/train_annotation.txt')
 val_dataset  = TextLineDataset(filenames='data/test_annotation.txt')
 train_path = "data/images"
@@ -50,8 +45,6 @@ val_path = "data/images"
 autotune = tf.data.experimental.AUTOTUNE
 train_dataset = train_dataset.map(lambda x: preprocess_data_from_textline(x, train_path),
                                   num_parallel_calls=autotune)
-# train_dataset = TFRecordDataset(filenames='data/train.record', num_parallel_reads=autotune)
-# train_dataset.map(lambda x: preprocess_data_from_tfrecord(x, feature_description), num_parallel_calls=autotune)
 
 train_dataset = train_dataset.shuffle(800)
 train_dataset = train_dataset.padded_batch(batch_size=batch_size, 

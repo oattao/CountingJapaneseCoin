@@ -9,3 +9,6 @@ Model to train: RetinaNet
 
 Japanese coin image dataset: https://drive.google.com/drive/folders/1tR5S4su0RXdCuyNFc6CDHXaI4zxxdYl7?usp=sharing
 Model weight file: https://drive.google.com/drive/folders/1cL-QQc4Oc2R-cz-cY10eYWLDAlmvXxs1?usp=sharing
+
+Test some images after training
+![myimage-alt-tag](https://github.com/oattao/japan_coin/blob/master/show/Figure_1.png?raw=true)

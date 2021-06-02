@@ -13,9 +13,11 @@ Model weight file: https://drive.google.com/drive/folders/1cL-QQc4Oc2R-cz-cY10eY
 
 Test some images after training
 
-<!-- ![myimage-alt-tag](https://github.com/oattao/japan_coin/blob/master/show/Figure_1.png?raw=true) -->
+![myimage-alt-tag](https://github.com/oattao/japan_coin/blob/master/show/test1.png?raw=true)
 
-![myimage-alt-tag]('./show/test1.png')
+![myimage-alt-tag](https://github.com/oattao/japan_coin/blob/master/show/test2.png?raw=true)
+
+![myimage-alt-tag](https://github.com/oattao/japan_coin/blob/master/show/test4.png?raw=true)
 
 To count coins in an image run this command:
 

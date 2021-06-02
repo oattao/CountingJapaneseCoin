@@ -1,18 +1,18 @@
 import os
-from utils.retina import RetinaNet, FocalLoss, get_backbone
-from utils.generator import (LabelEncoder, preprocess_data, 
-                             preprocess_data_from_textline, 
-                             preprocess_data_from_tfrecord)
 import tensorflow as tf
 from tensorflow import keras
 import tensorflow_datasets as tfds
 from tensorflow.data import TextLineDataset, TFRecordDataset
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
-
+from utils.loss import FocalLoss
+from utils.retina import RetinaNet, get_backbone
+from utils.generator import LabelEncoder, preprocess_data, preprocess_data_from_textline, preprocess_data_from_tfrecord
 
 # model_dir = "models"
-model_dir = 'models_2'
+# model_dir = 'models_2'
+# model_dir = 'models_3'
+model_dir = 'models'
 label_encoder = LabelEncoder()
 
 num_classes = 3
@@ -28,8 +28,8 @@ resnet50_backbone = get_backbone()
 loss_fn = FocalLoss(num_classes)
 model = RetinaNet(num_classes=num_classes)
 
-# model = RetinaNet(4)
-# latest_checkpoint = tf.train.latest_checkpoint('models/')
+# model = RetinaNet(3)
+# latest_checkpoint = tf.train.latest_checkpoint('models_3/')
 # model.load_weights(latest_checkpoint)
 
 optimizer = tf.optimizers.SGD(learning_rate=learning_rate_fn, momentum=0.9)

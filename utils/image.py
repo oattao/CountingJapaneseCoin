@@ -57,12 +57,11 @@ def resize_and_pad_image(image, min_side=800, max_side=1333,
 
 def prepare_image(image):
     image, _, ratio = resize_and_pad_image(image, jitter=None)
-
     image = tf.keras.applications.resnet.preprocess_input(image)
     return tf.expand_dims(image, axis=0), ratio
 
 def visualize_detections(image, boxes, classes, scores, figsize=(7, 7), 
-                         linewidth=1, color=[0, 0, 1]):
+                         linewidth=1, color=[0, 1, 0]):
     """Visualize Detections"""
     image = np.array(image, dtype=np.uint8)
     plt.figure(figsize=figsize)
@@ -76,7 +75,7 @@ def visualize_detections(image, boxes, classes, scores, figsize=(7, 7),
         patch = plt.Rectangle([x1, y1], w, h, fill=False, edgecolor=color, 
                                linewidth=linewidth)
         ax.add_patch(patch)
-        ax.text(x1, y1, text, bbox={"facecolor": color, "alpha": 0.4},
+        ax.text(x1+5, y1-9, text, bbox={"facecolor": color, "alpha": 0.4},
                 clip_box=ax.clipbox, clip_on=True)
     plt.show()
     return ax    

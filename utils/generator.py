@@ -2,7 +2,7 @@ import os
 import tensorflow as tf
 from tensorflow.keras.applications.resnet import preprocess_input
 from utils.anchor import AnchorBox
-from utils.box import (swap_xy, convert_to_xywh, convert_to_corners, 
+from utils.image import (swap_xy, convert_to_xywh, convert_to_corners, 
                        compute_iou, random_flip_horizontal, resize_and_pad_image)
 
 

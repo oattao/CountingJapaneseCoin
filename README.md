@@ -19,4 +19,7 @@ Test some images after training
 
 To count coins in an image run this command:
 
+```
+console
 python count.py --model_dir=path_to_trained_model --image_dir=path_to_image_file
+```
